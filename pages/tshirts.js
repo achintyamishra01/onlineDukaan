@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 const tshirts = () => {
   return (
-    <div><section className="text-gray-600 body-font ">
+    <div><section className="text-gray-600 body-font mx-16">
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap -m-4">
           <Link href={"/Products/tshirt lelo"}><div className="lg:w-1/5 md:w-1/2 p-4 w-full cursor-pointer shadow-lg m-2">
