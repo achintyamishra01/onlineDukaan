@@ -3,7 +3,8 @@ import Link from "next/link"
 import { BsFillCartFill ,BsFillBagCheckFill} from 'react-icons/bs';
 import{AiFillCloseCircle,AiOutlinePlusCircle,AiOutlineMinusCircle} from 'react-icons/ai'
 import { useRef } from 'react';
-const Navbar = () => {
+const Navbar = ({cart,addToCart,removeFromCart,clearCart,subTotal}) => {
+
   const toggleCart=()=>{
    
       if(ref.current.classList.contains("translate-x-full")){
@@ -36,76 +37,33 @@ const Navbar = () => {
         </nav>
         <div onClick={toggleCart}>
         <BsFillCartFill className='mx-2 text-3xl sm:m-4 cursor-pointer'></BsFillCartFill></div>
-        <div ref={ref} className="w-70 h-full  sidecart absolute top-0 right-0 bg-pink-200 px-6 py-10 transform transition-transform translate-x-full  rounded-xl" style={{"z-index":"1"}}>
+        <div ref={ref} className="w-70 h-full  sidecart absolute top-0 right-0 bg-pink-200 px-6 py-10 transform transition-transform translate-x-full  rounded-xl" style={{"zIndex":"1"}}>
 
           <h2 className='font-bold text-xl text-center'>This is Shopping Cart</h2>
           <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-xl"><AiFillCloseCircle className="text-red-600"/></span>
           <ol className='list-decimal font-semibold'>
-            <li>
+            {Object.keys(cart).length==0 && <div className='my-4 font-normal'>
+              No items in cart
+              </div>}
+            {Object.keys(cart).map((k)=>{return <li key={k}>
               <div className="item flex my-5">
               <div className='w-2/3 p-2 font-semibold '>
-              Tshirt-Wear The Code
+              {cart[k].name} {cart[k].size}
               </div>
               <div className='w-1/3  flex items-center justify-center '>
-             <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600"></AiOutlineMinusCircle>1<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600'></AiOutlinePlusCircle> 
+             <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600" onClick={()=>{removeFromCart(k,1,cart[k].price,cart[k].name,cart[k].size,cart[k].variant)}}></AiOutlineMinusCircle>{cart[k].qty}<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600' onClick={()=>{addToCart(k,1,cart[k].price,cart[k].name,cart[k].size,cart[k].variant)}}></AiOutlinePlusCircle> 
               </div>
               </div>
-              </li>
-              <li>
-              <div className="item flex my-5">
-              <div className='w-2/3 p-2 font-semibold '>
-              Tshirt-Wear The Code
-              </div>
-              <div className='w-1/3  flex items-center justify-center'>
-              <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600"></AiOutlineMinusCircle>1<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600'></AiOutlinePlusCircle> 
-              </div>
-              </div>
-              </li>
-              <li>
-              <div className="item flex my-5">
-              <div className='w-2/3 p-2 font-semibold '>
-              Tshirt-Wear The Code
-              </div>
-              <div className='w-1/3  flex items-center justify-center'>
-              <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600"></AiOutlineMinusCircle>1<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600'></AiOutlinePlusCircle> 
-              </div>
-              </div>
-              </li>
-              <li>
-              <div className="item flex my-5">
-              <div className='w-2/3 p-2 font-semibold '>
-              Tshirt-Wear The Code
-              </div>
-              <div className='w-1/3  flex items-center justify-center'>
-              <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600"></AiOutlineMinusCircle>1<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600'></AiOutlinePlusCircle> 
-              </div>
-              </div>
-              </li>
-              <li>
-              <div className="item flex my-5">
-              <div className='w-2/3 p-2 font-semibold '>
-              Tshirt-Wear The Code
-              </div>
-              <div className='w-1/3  flex items-center justify-center'>
-              <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600"></AiOutlineMinusCircle>1<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600'></AiOutlinePlusCircle> 
-              </div>
-              </div>
-              </li>
-              <li>
-              <div className="item flex my-5">
-              <div className='w-2/3 p-2 font-semibold '>
-              Tshirt-Wear The Code
-              </div>
-              <div className='w-1/3  flex items-center justify-center'>
-              <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600"></AiOutlineMinusCircle>1<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600'></AiOutlinePlusCircle>   
-              </div>
-              </div>
-              </li>
+              </li>})}
+            
+            
+             
               
           </ol>
-          <div className='flex'>
+          {Object.keys(cart).length!=0 && <div className='flex'>
           <button className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mr-2"><BsFillBagCheckFill className='mt-1 mx-1'></BsFillBagCheckFill>Checkout</button>
-          <button className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mr-2">Clear</button></div>
+
+          <button onClick={clearCart}className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mr-2">Clear</button></div>}
         </div>
         <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Login
           <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
