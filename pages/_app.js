@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart"))) //since item in local storage is i the form of string
+        saveCart(JSON.parse(localStorage.getItem("cart")))
       }
       else {
 
@@ -21,12 +22,7 @@ function MyApp({ Component, pageProps }) {
       console.log(error)
       localStorage.clear();
     }
-    if (localStorage.getItem("cart")) {
-      setCart(JSON.parse(localStorage.getItem("cart"))) //since item in local storage is i the form of string
-    }
-    else {
-
-    }
+   
   }, [])
 
 
@@ -44,7 +40,7 @@ function MyApp({ Component, pageProps }) {
   }
   //add items to cart
   const addToCart = (itemCode, qty, price, name, size, variant) => {
-    console.log("hey i am addTo Cart")
+    
     let newCart = cart;
     if (itemCode in cart) {
       newCart[itemCode].qty = cart[itemCode].qty + qty;
@@ -79,7 +75,8 @@ function MyApp({ Component, pageProps }) {
 
 
   }
-  return <><Navbar cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
+  //here key is goven as subtotal so that subtotal is updated on time otherwise it will not be updated beacuse the components are rendered before updating it
+  return <><Navbar key={subTotal} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
   
   <Component cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }
