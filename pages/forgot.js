@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-const SignUp = () => {
+const forgot = () => {
   return (
     <div><section className="h-screen">
     <div className="container px-6 py-12 h-full">
@@ -13,17 +13,11 @@ const SignUp = () => {
           />
         </div>
         <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-          <h1 className='text-center m-2 text-lg'>Sign Up for CodesWear</h1>
+          <h1 className='text-center m-1 text-lg'>Forgot Password</h1>
           <Link href={"/login"}><a><h2 className='text-center m-1 text-blue-500'>Or Login</h2></a></Link>
           <form>
             
-            <div className="mb-6">
-              <input
-                type="text" name='name' required id='name' htmlFor='name'
-                className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                placeholder="Enter Your Name"
-              />
-            </div>
+          
             <div className="mb-6">
               <input
                 type="email" name='email' required id='email' htmlFor='email'
@@ -33,13 +27,7 @@ const SignUp = () => {
             </div>
   
             
-            <div className="mb-6">
-              <input
-                type="password" name='password' required id="password" htmlFor='password'
-                className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                placeholder="Password"
-              />
-            </div>
+       
   
             
   
@@ -50,7 +38,7 @@ const SignUp = () => {
               data-mdb-ripple="true"
               data-mdb-ripple-color="light"
             >
-             Sign Up
+             Continue
             </button>
   
           
@@ -64,4 +52,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default forgot
