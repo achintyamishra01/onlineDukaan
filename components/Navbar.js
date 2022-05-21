@@ -34,7 +34,7 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
 
         <div className='absolute right-0 top-4 cursor-pointer md:mx-5 flex m-2'>
           <BsFillCartFill className='text-2xl  m-2 md:text-3xl' onClick={toggleCart}></BsFillCartFill>
-          <Link href="/login"><MdAccountCircle className='text-2xl m-2 md:text-3xl'></MdAccountCircle></Link>
+          <Link href="/login"><a><MdAccountCircle className='text-2xl m-2 md:text-3xl'></MdAccountCircle></a></Link>
 
 
         </div>
