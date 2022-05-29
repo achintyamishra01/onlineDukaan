@@ -64,7 +64,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
 
       </div>
       <h2 className=' font-semibold  text-xl'>2. Review Cart Items</h2>
-      <div  className="  sidecart  bg-gradient-to-b from-slate-100 to-pink-200 ... p-6 m-2  " >
+      <div  className="   bg-gradient-to-b from-slate-100 to-pink-200 ... p-6 m-2  " >
 
       
         
@@ -77,7 +77,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
             return <li key={k}>
               <div className="item flex my-5">
                 <div className=' p-2 font-semibold '>
-                  {cart[k].name} {cart[k].size}
+                  {cart[k].name} ({cart[k].size}/{cart[k].variant})
                 </div>
                 <div className='w-1/3  flex items-center justify-center '>
                   <AiOutlineMinusCircle className="mx-1 cursor-pointer  text-red-600" onClick={() => { removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }}></AiOutlineMinusCircle>{cart[k].qty}<AiOutlinePlusCircle className='mx-1 cursor-pointer text-red-600' onClick={() => { addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }}></AiOutlinePlusCircle>

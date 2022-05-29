@@ -2,10 +2,13 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import '../styles/globals.css'
 import { useState, useEffect } from 'react'
+import {useRouter} from 'next/router'
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({})
   const [subTotal, setsubTotal] = useState(0)
+
+  const router=useRouter()
 
   // What does useEffect do? By using this Hook, you tell React that your component needs to do something after render
   useEffect(() => {
@@ -51,6 +54,18 @@ function MyApp({ Component, pageProps }) {
     setCart(newCart)
     saveCart(newCart) //method made because if user reloads the page data of the cart is not lost
   }
+//buy now
+const buyNow=(itemCode, qty, price, name, size, variant)=>{
+  let newCart={itemCode:{qty: 1, price, name, size, variant}}
+  setCart(newCart)
+  saveCart(newCart)
+  router.push("/checkout")
+
+}
+
+
+
+
 
   //to clear items in cart
   const clearCart = () => {
@@ -78,7 +93,7 @@ function MyApp({ Component, pageProps }) {
   //here key is goven as subtotal so that subtotal is updated on time otherwise it will not be updated beacuse the components are rendered before updating it
   return <><Navbar key={subTotal} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
   
-  <Component cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
+  <Component cart={cart} buyNow={buyNow} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }
 
 export default MyApp
