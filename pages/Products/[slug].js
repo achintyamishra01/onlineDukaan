@@ -98,7 +98,7 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
                 {Object.keys(variants).includes("Yellow") && <button onClick={() => { refreshVariant(Object.keys(variants["Yellow"])[0], "Yellow") }} className={`border-2  ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none ${color == "Yellow" ? "border-black" : "border-gray-300"}`}></button>}
 
                 {Object.keys(variants).includes("Black") && <button onClick={() => { refreshVariant(Object.keys(variants["Black"])[0], "Black") }} className={`border-2  ml-1 bg-black rounded-full w-6 h-6 focus:outline-none ${color == "Black" ? "border-black" : "border-gray-300"}`}></button>}
-                {Object.keys(variants).includes("Orange") && <button onClick={() => { refreshVariant(Object.keys(variants["Orange"])[0], "Orange") }} className={`border-2  ml-1 bg-orange-500 rounded-full w-6 h-6 focus:outline-none ${color == "Black" ? "border-black" : "border-gray-300"}`}></button>}
+                {Object.keys(variants).includes("Orange") && <button onClick={() => { refreshVariant(Object.keys(variants["Orange"])[0], "Orange") }} className={`border-2  ml-1 bg-orange-500 rounded-full w-6 h-6 focus:outline-none ${color == "Orange" ? "border-black" : "border-gray-300"}`}></button>}
               </div>
               <div className="flex ml-6 items-center">
                 <span className="mr-3">Size</span>
