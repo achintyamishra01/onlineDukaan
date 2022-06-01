@@ -10,6 +10,10 @@ function MyApp({ Component, pageProps }) {
 
   const router=useRouter()
 
+//beow 2 lines for login signup 
+const [user, setuser] = useState({value:null})
+const [key, setkey] = useState(0)
+
   // What does useEffect do? By using this Hook, you tell React that your component needs to do something after render
   useEffect(() => {
     console.log("hey i am a useEffect from _app.js")
@@ -25,8 +29,21 @@ function MyApp({ Component, pageProps }) {
       console.log(error)
       localStorage.clear();
     }
+    //below code in useEffect is for login and signup
+    const token=localStorage.getItem('token')
+    setuser({value:token})
+    
+    setkey(Math.random())
    
-  }, [])
+  }, [router.query])
+
+//to logout
+const Logout=()=>{
+  localStorage.removeItem('token')
+  setkey(Math.random())
+  setuser({value:null})
+}
+
 
 
   //to save the exisiting state of cart
@@ -91,7 +108,9 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
 
   }
   //here key is goven as subtotal so that subtotal is updated on time otherwise it will not be updated beacuse the components are rendered before updating it
-  return <><Navbar key={subTotal} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
+
+  //now key is changed when login and signup is implemented
+  return <><Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
   
   <Component cart={cart} buyNow={buyNow} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }

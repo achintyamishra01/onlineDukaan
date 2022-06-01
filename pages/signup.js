@@ -31,7 +31,7 @@ const SignUp = () => {
         draggable: true,
         progress: undefined,
         });
-      window.location="/orders"
+      window.location="/order"
       }
       else if(res.status!=200){
         toast.error(' Check details once again', {

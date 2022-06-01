@@ -3,8 +3,10 @@ import Link from "next/link"
 import { BsFillCartFill, BsFillBagCheckFill } from 'react-icons/bs';
 import { MdAccountCircle } from 'react-icons/md'
 import { AiFillCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
-import { useRef } from 'react';
-const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+import { useRef, useState } from 'react';
+const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+
+  const [dropdown, setdropdown] = useState(false)
 
   const toggleCart = () => {
 
@@ -22,7 +24,7 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   return (
     <div><header className="text-gray-600 body-font shadow-xl  ">
 
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center   ">
+      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row md:items-center   ">
         <Link href={"/"}>
           <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
@@ -33,8 +35,19 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         </Link>
 
         <div className='absolute right-0 top-4 cursor-pointer md:mx-5 flex m-2'>
+          <span onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }}>
+            {dropdown && <div onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }} className="absolute top-8 right-16  bg-indigo-500 rounded-md text-cyan-50 px-4 py-4 w-32">
+              <ul>
+                <Link href={""} ><a> <li className='text-sm py-1 hover:text-gray-300'>My Account</li></a></Link>
+
+                <Link href={"/order"} ><a> <li className='text-sm py-1 hover:text-gray-300'>Your Orders</li></a></Link>
+
+                 <li onClick={Logout} className='text-sm py-1 hover:text-gray-300'>Logout</li>
+              </ul>
+            </div>}
+            {user.value && <MdAccountCircle className='text-2xl m-2 md:text-3xl'></MdAccountCircle>}</span>
+          {!user.value && <Link href="/login"><a><button className=' bg-indigo-500 px-2 py-1 rounded-md text-cyan-50  md: m-2 hover:bg-indigo-700 '>Login</button></a></Link>}
           <BsFillCartFill className='text-2xl  m-2 md:text-3xl' onClick={toggleCart}></BsFillCartFill>
-          <Link href="/login"><a><MdAccountCircle className='text-2xl m-2 md:text-3xl'></MdAccountCircle></a></Link>
 
 
         </div>

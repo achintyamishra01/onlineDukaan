@@ -20,7 +20,10 @@ const login = () => {
       },
       body:JSON.stringify(data)
     });
+    const response=await res.json();
+    
     if(res.status==200){
+      localStorage.setItem("token",response.token)
       toast.success('  Succesfully logged in', {
         position: "bottom-left",
         autoClose: 3000,
@@ -30,7 +33,10 @@ const login = () => {
         draggable: true,
         progress: undefined,
         });
-      router.push("http://localhost:3000");
+        setTimeout(() => {
+          router.push("http://localhost:3000");
+        }, 2000);
+      
       }
       else if(res.status!=200){
         toast.error(' Check details once again', {
@@ -46,7 +52,7 @@ const login = () => {
 
 
 
-    const response=await res.json();
+    
     console.log(response)
 
     setemail("")
