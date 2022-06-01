@@ -121,11 +121,7 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
               <span className="title-font font-medium text-2xl text-gray-900">₹ {product.price}.00</span>
               <button onClick={() => { addToCart(slug, 1, product.price, product.title, size, color) }} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add to Cart</button>
               <button onClick={() => { buyNow(slug, 1, product.price, product.title, size, color) }} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Buy Now</button>
-              <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                </svg>
-              </button>
+              
             </div>
             <div className="pin mt-6 flex space-x-2 text-sm">
               <input placeholder='Enter your Pincode' onChange={onChangePin} className='px-2 border-2 border-blue-400 rounded-md h-9' type="number"></input>
