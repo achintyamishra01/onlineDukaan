@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
@@ -8,6 +8,18 @@ const login = () => {
   const router=useRouter()
   const [email, setemail] = useState()
   const [password, setpassword] = useState()
+
+useEffect(() => {  //if user is already logged in then eredirect him to hime page
+  if(localStorage.getItem('token')){ 
+
+   router.push("/")
+  }
+
+ 
+}, [])
+
+
+
 
 
   const handleSubmit=async(e)=>{

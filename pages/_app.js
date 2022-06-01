@@ -3,12 +3,16 @@ import Footer from '../components/Footer'
 import '../styles/globals.css'
 import { useState, useEffect } from 'react'
 import {useRouter} from 'next/router'
+import LoadingBar from 'react-top-loading-bar'
 
 function MyApp({ Component, pageProps }) {
+
   const [cart, setCart] = useState({})
   const [subTotal, setsubTotal] = useState(0)
 
   const router=useRouter()
+
+  const [progress, setProgress] = useState(0) //loading bar
 
 //beow 2 lines for login signup 
 const [user, setuser] = useState({value:null})
@@ -16,6 +20,16 @@ const [key, setkey] = useState(0)
 
   // What does useEffect do? By using this Hook, you tell React that your component needs to do something after render
   useEffect(() => {
+    router.events.on('routeChangeStart',()=>{ //code for top loading bar
+      setProgress(40)
+    })
+    router.events.on('routeChangeComplete',()=>{ //code for top loading bar
+      setProgress(100)
+    })
+
+
+
+
     console.log("hey i am a useEffect from _app.js")
     try {
       if (localStorage.getItem("cart")) {
@@ -110,7 +124,15 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
   //here key is goven as subtotal so that subtotal is updated on time otherwise it will not be updated beacuse the components are rendered before updating it
 
   //now key is changed when login and signup is implemented
-  return <><Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
+  return <>
+   <LoadingBar
+        color='#F00'
+        height={4}
+        progress={progress}
+        waitingTime={300}
+        onLoaderFinished={() => setProgress(0)}
+      />
+  <Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
   
   <Component cart={cart} buyNow={buyNow} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }

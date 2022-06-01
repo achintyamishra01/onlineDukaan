@@ -36,13 +36,13 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
 
         <div className='absolute right-0 top-4 cursor-pointer md:mx-5 flex m-2'>
           <span onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }}>
-            {dropdown && <div onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }} className="absolute top-8 right-16  bg-indigo-500 rounded-md text-cyan-50 px-4 py-4 w-32">
+            {dropdown && <div onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }} className="absolute top-8 right-16  bg-white rounded-md text-black text-sm font-bold px-4 py-4 w-32">
               <ul>
-                <Link href={""} ><a> <li className='text-sm py-1 hover:text-gray-300'>My Account</li></a></Link>
+                <Link href={""} ><a> <li className='text-sm py-1 hover:text-indigo-500'>My Account</li></a></Link>
 
-                <Link href={"/order"} ><a> <li className='text-sm py-1 hover:text-gray-300'>Your Orders</li></a></Link>
+                <Link href={"/order"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>Your Orders</li></a></Link>
 
-                 <li onClick={Logout} className='text-sm py-1 hover:text-gray-300'>Logout</li>
+                 <li onClick={Logout} className='text-sm py-1 hover:text-indigo-500'>Logout</li>
               </ul>
             </div>}
             {user.value && <MdAccountCircle className='text-2xl m-2 md:text-3xl'></MdAccountCircle>}</span>
@@ -60,7 +60,7 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
 
 
         {/* here in below div if condition is applied because our cart was closing everytime we perform any action in it like adding or deleting items it happens because component navbar was re-rendered due to change in subtotal therefore conditon is applied on translate  */}
-        <div ref={ref} className={` w-80 h-[100vh] overflow-y-scroll  sidecart absolute top-0 right-0 bg-gradient-to-b from-slate-100   to-pink-200 ... px-6 py-10 transform transition-transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'}  rounded-xl`} style={{ "zIndex": "1" }}>
+        <div ref={ref} className={` w-80 h-[100vh] overflow-y-scroll  sidecart absolute top-0 right-0 bg-gradient-to-b from-slate-100   to-indigo-200 ... px-6 py-10 transform transition-transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'}  rounded-xl`} style={{ "zIndex": "1" }}>
 
           <h2 className='font-bold text-xl text-center'>This is Shopping Cart</h2>
           <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-xl"><AiFillCloseCircle className='text-red-700 ' /></span>
