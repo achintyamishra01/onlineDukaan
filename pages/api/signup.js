@@ -3,7 +3,7 @@ import User from "../../models/User"
 import cryptoJs from "crypto-js"
 const handler =async(req,res)=>{
     if(req.method=="POST"){
-        const cipherText= cryptoJs.AES.encrypt(req.body.password,'khatarnaak').toString()  //to encrypt password
+        const cipherText= cryptoJs.AES.encrypt(req.body.password,`${process.env.CRYPTO}`).toString()  //to encrypt password
         
         let u=new User({
             name:req.body.name,

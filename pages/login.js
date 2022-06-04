@@ -6,8 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 const login = () => {
   const router=useRouter()
-  const [email, setemail] = useState()
-  const [password, setpassword] = useState()
+  const [email, setemail] = useState('')
+  const [password, setpassword] = useState('')
 
 useEffect(() => {  //if user is already logged in then eredirect him to hime page
   if(localStorage.getItem('token')){ 

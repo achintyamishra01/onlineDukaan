@@ -2,9 +2,56 @@ import React from 'react'
 import { BsFillCartFill, BsFillBagCheckFill } from 'react-icons/bs';
 import {  AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import Link from "next/link"
+import Head from 'next/head';  //imported to  integrate with payment gateway
+import Script from 'next/script'; //imported to  integrate with payment gateway
 const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
+
+  const initiatePayment=async()=> {
+    let txnToken
+    let amount
+
+    //getting a transaction token
+   let a=await fetch('http:localhost:3000/api/pretransaction')
+    
+   
+   var config = {
+      "root": "",
+      "flow": "DEFAULT",
+      "data": {
+      "orderId": Math.random(), /* update order id */
+      "token": txnToken, /* update token value */
+      "tokenType": "TXN_TOKEN",
+      "amount": amount /* update amount */
+      },
+      "handler": {
+        "notifyMerchant": function(eventName,data){
+          console.log("notifyMerchant handler function called");
+          console.log("eventName => ",eventName);
+          console.log("data => ",data);
+        } 
+      }
+    };
+
+    
+        
+            // initialze configuration using init method 
+            window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
+                // after successfully updating configuration, invoke JS Checkout
+                window.Paytm.CheckoutJS.invoke();
+            }).catch(function onError(error){
+                console.log("error => ",error);
+            });
+      
+    
+}
+
+
   return (
     <div className='container m-auto w-4/5 '>
+      <Head>
+      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"/>
+      </Head>
+      <Script type="application/javascript" crossorigin="anonymous" src={`${process.env.PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`}  onload="onScriptLoad();"></Script> 
       <h1 className='text-center font-bold my-5 text-xl'>Checkout</h1>
       <h2 className=' font-semibold  text-xl'>1. Delivery Details</h2>
       <div className="mx-auto flex my-4">
@@ -91,7 +138,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
      
           <span className='font-bold'>Subtotal : ₹{subTotal}</span>
           <div className="mx-8">
-          <Link href={"/checkout"}><button className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Pay ₹{subTotal} </button>
+          <Link href={"/checkout"}><button onClick={initiatePayment} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Pay ₹{subTotal} </button>
             </Link>
           </div>
        

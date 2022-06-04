@@ -38,7 +38,7 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
           <span onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }}>
             {dropdown && <div onMouseOver={() => { setdropdown(true) }} onMouseLeave={() => { setdropdown(false) }} className="absolute top-8 right-16  bg-white rounded-md text-black text-sm font-bold px-4 py-4 w-32">
               <ul>
-                <Link href={""} ><a> <li className='text-sm py-1 hover:text-indigo-500'>My Account</li></a></Link>
+                <Link href={"/myAccount"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>My Account</li></a></Link>
 
                 <Link href={"/order"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>Your Orders</li></a></Link>
 

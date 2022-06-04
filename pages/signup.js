@@ -6,9 +6,9 @@ import { useState,useEffect } from 'react'
 import { useRouter } from 'next/router';
 const SignUp = () => {
   const router=useRouter()
-  const [name, setname] = useState()
-  const [email, setemail] = useState()
-  const [password, setpassword] = useState()
+  const [name, setname] = useState('')
+  const [email, setemail] = useState('')
+  const [password, setpassword] = useState('')
 
 
   useEffect(() => {  //if user is already logged in then redirect him to home page

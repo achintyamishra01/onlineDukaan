@@ -7,12 +7,12 @@ const handler =async(req,res)=>{
        let user=await User.findOne({"email":req.body.email})
        
        if(user){
-           const bytes= cryptoJs.AES.decrypt(user.password,'khatarnaak') //password from database is taken and decrypted and matchedd with entered password 
+           const bytes= cryptoJs.AES.decrypt(user.password,`${process.env.CRYPTO}`) //password from database is taken and decrypted and matchedd with entered password 
            const password=bytes.toString(cryptoJs.enc.Utf8)
             
 
             if( req.body.password==password){
-                let token = jwt.sign({success:"success",user}, 'secret',{
+                let token = jwt.sign({success:"success",user}, `${process.env.JWT}`,{
                     expiresIn:"2d"
                 });
                

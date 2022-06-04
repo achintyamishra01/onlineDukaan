@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }) {
 
 //beow 2 lines for login signup 
 const [user, setuser] = useState({value:null})
-const [key, setkey] = useState(0)
+const [key, setkey] = useState()
 
   // What does useEffect do? By using this Hook, you tell React that your component needs to do something after render
   useEffect(() => {
@@ -56,6 +56,7 @@ const Logout=()=>{
   localStorage.removeItem('token')
   setkey(Math.random())
   setuser({value:null})
+  router.push("/")
 }
 
 
@@ -132,7 +133,7 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
         waitingTime={300}
         onLoaderFinished={() => setProgress(0)}
       />
-  <Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />
+  {key &&<Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />}
   
   <Component cart={cart} buyNow={buyNow} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }
