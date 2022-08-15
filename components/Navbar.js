@@ -40,7 +40,7 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
               <ul>
                 <Link href={"/myAccount"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>My Account</li></a></Link>
 
-                <Link href={"/order"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>Your Orders</li></a></Link>
+                <Link href={"/orders"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>Your Orders</li></a></Link>
 
                  <li onClick={Logout} className='text-sm py-1 hover:text-indigo-500'>Logout</li>
               </ul>

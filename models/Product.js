@@ -15,6 +15,10 @@ const ProductSchema=new mongoose.Schema({
 
   // Cannot overwrite `Product` model once compiled
   // this error was shown because each time when it is imported it again starts to make same model threfore to fix it ..below single code line is written
-  mongoose.models={}
 
-  export default mongoose.model("Product",ProductSchema);
+//   mongoose.models={}
+
+//  export default mongoose.model("Product",ProductSchema);
+
+
+  export default mongoose.models.Product || mongoose.model("Product",ProductSchema)

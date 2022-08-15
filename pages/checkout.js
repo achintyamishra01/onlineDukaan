@@ -4,24 +4,78 @@ import {  AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import Link from "next/link"
 import Head from 'next/head';  //imported to  integrate with payment gateway
 import Script from 'next/script'; //imported to  integrate with payment gateway
+import { useState } from 'react';
 const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
 
+
+  
+  const [name, setname] = useState('')
+  const [email, setemail] = useState('')
+  const [phone, setphone] = useState('')
+  const [address, setaddress] = useState('')
+  const [pincode, setpincode] = useState('')
+  const [city, setcity] = useState('')
+  const [state, setstate] = useState('')
+  const[disabled,setdisable]=useState(true)
+  const handleChange=(e)=>{
+    if(e.target.name=='name'){
+      setname(e.target.value)
+    }
+    if(e.target.name=='email'){
+      setemail(e.target.value)
+    }
+    if(e.target.name=='pincode'){
+      setpincode(e.target.value)
+    }
+    if(e.target.name=='phone'){
+      setphone(e.target.value)
+    }
+    if(e.target.name=='address'){
+      setaddress(e.target.value)
+    }
+
+    if(name.length>=3 && email.length>=5 && pincode.length==6 && phone.length==10 && address.length>=5){
+      setdisable(false)
+    }
+    else{
+      setdisable(true)
+    }
+
+  }
+
+
+
+
+
+
   const initiatePayment=async()=> {
-    let txnToken
-    let amount
+    
+    
+    let oid=Math.floor( Math.random()*Date.now())
 
     //getting a transaction token
-   let a=await fetch('http:localhost:3000/api/pretransaction')
-    
    
+   
+   const data={cart,subTotal,oid,email:email,name,address,pincode,phone}
+   let a=await fetch("/api/preTransaction",{
+      method:'POST',
+      headers:{
+        'Content-type':'application/json',
+
+      },
+      body:JSON.stringify(data)
+   });
+   let txnRes=await a.json();
+   let txnToken=txnRes.txnToken
+
    var config = {
       "root": "",
       "flow": "DEFAULT",
       "data": {
-      "orderId": Math.random(), /* update order id */
+      "orderId":oid, /* update order id */
       "token": txnToken, /* update token value */
       "tokenType": "TXN_TOKEN",
-      "amount": amount /* update amount */
+      "amount": subTotal /* update amount */
       },
       "handler": {
         "notifyMerchant": function(eventName,data){
@@ -51,20 +105,20 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
       <Head>
       <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"/>
       </Head>
-      <Script type="application/javascript" crossorigin="anonymous" src={`${process.env.PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`}  onload="onScriptLoad();"></Script> 
+      <Script type="application/javascript" crossorigin="anonymous" src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}  onload={initiatePayment}></Script> 
       <h1 className='text-center font-bold my-5 text-xl'>Checkout</h1>
       <h2 className=' font-semibold  text-xl'>1. Delivery Details</h2>
       <div className="mx-auto flex my-4">
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name</label>
-            <input type="text" id="name" name="name" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-          </div>
+            <input type="text" onChange={handleChange} value={name}  id="name" name="name" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+          </div> 
         </div>
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-            <input type="email" id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input type="email" onChange={handleChange} value={email}  id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
 
         </div>
@@ -74,7 +128,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
         <div className=" mb-4">
           <label htmlFor="address" className="leading-7 text-sm text-gray-600">Address</label>
 
-          <textarea cols="30" rows="2" id="address" name="address" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
+          <textarea cols="30"  onChange={handleChange} value={address} rows="2" id="address" name="address" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
         </div>
 
       </div>
@@ -82,29 +136,30 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="phone" className="leading-7 text-sm text-gray-600">Phone</label>
-            <input type="text" id="phone" name="phone" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input type="number" id="phone" onChange={handleChange} value={phone}  name="phone" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
         </div>
-        <div className="px-2  w-1/2">
-          <div className=" mb-4">
-            <label htmlFor="city" className="leading-7 text-sm text-gray-600">City</label>
-            <input type="text" id="city" name="city" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-          </div>
-
-        </div>
-
-      </div>
-      <div className="mx-auto flex my-4">
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="pincode" className="leading-7 text-sm text-gray-600">Pincode</label>
-            <input type="number" id="pincode" name="pincode" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input type="number" onChange={handleChange} value={pincode}  id="pincode" name="pincode" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
+        </div>
+       
+
+      </div>
+      <div className="mx-auto flex my-4">
+      <div className="px-2  w-1/2">
+          <div className=" mb-4">
+            <label htmlFor="city" value={city} className="leading-7 text-sm text-gray-600">City</label>
+            <input type="text" id="city" name="city" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true} />
+          </div>
+
         </div>
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="state" className="leading-7 text-sm text-gray-600">State</label>
-            <input type="text" id="state" name="state" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input type="text" id="state" value={state} name="state" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true} />
           </div>
 
         </div>
@@ -138,7 +193,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
      
           <span className='font-bold'>Subtotal : ₹{subTotal}</span>
           <div className="mx-8">
-          <Link href={"/checkout"}><button onClick={initiatePayment} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Pay ₹{subTotal} </button>
+          <Link href={"/checkout"}><button disabled={disabled} onClick={initiatePayment} className="disabled:bg-indigo-300  flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Pay ₹{subTotal} </button>
             </Link>
           </div>
        

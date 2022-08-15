@@ -44,6 +44,7 @@ const SignUp = () => {
     })
     
     if(res.status==200){
+      
       toast.success(' Account Created Succesfully', {
         position: "bottom-left",
         autoClose: 1000,
@@ -53,7 +54,21 @@ const SignUp = () => {
         draggable: true,
         progress: undefined,
         });
-      window.location="/order"
+        setTimeout(() => {
+          router.push("/login")
+        }, 3000);
+      
+      }
+      else if(res.status==409){
+        toast.error('Account already exist', {
+          position: "bottom-left",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
       else if(res.status!=200){
         toast.error(' Check details once again', {
@@ -66,6 +81,7 @@ const SignUp = () => {
           progress: undefined,
           });
       }
+      
     const response = await res.json();
     
 

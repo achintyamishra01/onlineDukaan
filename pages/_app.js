@@ -45,8 +45,9 @@ const [key, setkey] = useState()
     }
     //below code in useEffect is for login and signup
     const token=localStorage.getItem('token')
+    if(token){
     setuser({value:token})
-    
+    }
     setkey(Math.random())
    
   }, [router.query])
@@ -88,7 +89,8 @@ const Logout=()=>{
   }
 //buy now
 const buyNow=(itemCode, qty, price, name, size, variant)=>{
-  let newCart={itemCode:{qty: 1, price, name, size, variant}}
+  let newCart={};
+   newCart[itemCode]={qty: 1, price, name, size, variant}
   setCart(newCart)
   saveCart(newCart)
   router.push("/checkout")
