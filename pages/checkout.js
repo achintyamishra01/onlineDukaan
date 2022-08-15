@@ -5,6 +5,8 @@ import Link from "next/link"
 import Head from 'next/head';  //imported to  integrate with payment gateway
 import Script from 'next/script'; //imported to  integrate with payment gateway
 import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
 
 
@@ -25,7 +27,17 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
       setemail(e.target.value)
     }
     if(e.target.name=='pincode'){
+      
       setpincode(e.target.value)
+      if(e.target.value.length==6){
+      
+        pinInfo(e.target.value);
+      }
+      else{
+        setcity('')
+        setstate('') 
+      }
+      
     }
     if(e.target.name=='phone'){
       setphone(e.target.value)
@@ -33,8 +45,9 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
     if(e.target.name=='address'){
       setaddress(e.target.value)
     }
-
+    
     if(name.length>=3 && email.length>=5 && pincode.length==6 && phone.length==10 && address.length>=5){
+      
       setdisable(false)
     }
     else{
@@ -43,6 +56,111 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
 
   }
 
+const pinInfo=async(pin)=>{
+
+  ///postal api 
+   let b=await fetch(`https://api.postalpincode.in/pincode/${pin}`)
+   let a=await b.json()
+   if(b.status==200){   
+    
+    let pins = await fetch("http://localhost:3000/api/pincodeSlug");
+    let pinJson = await pins.json();
+
+//now checking whether that pincode is deleiverable or not using our own api
+    if (pinJson.includes(parseInt(pin))) {
+      toast.success(' Yay we Deliver Here!', {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      
+        setcity(a[0].PostOffice[0].District);
+
+        setstate(a[0].PostOffice[0].State)
+    }
+    else {
+      toast.error(' Sorry we will be here soon', {
+        position: "bottom-center ",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+        setcity('')
+        setstate('')
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+   
+}
+else{
+  toast.error('Pincode is not servicable', {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      setcity('')
+      setstate('')
+}
+//api made by me  which is replaced by postal api
+
+
+  // let b=await fetch("/api/pincode",{
+  //   method:'POST',
+  //   headers:{
+  //     'Content-type':'application/json',
+
+  //   },
+  //   body:JSON.stringify(pin)
+  // })
+  
+  // const a=await b.json();
+  // if(b.status==200){
+    
+  //   setcity(a.city);
+
+  // setstate(a.state)
+  // }
+  // else{
+  //   toast.error('Pincode is not servicable', {
+  //     position: "bottom-left",
+  //     autoClose: 3000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     });
+  //   setcity('')
+  //   setstate('')
+  // }
+}
 
 
 
@@ -66,6 +184,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
       body:JSON.stringify(data)
    });
    let txnRes=await a.json();
+   if(txnRes.success){
    let txnToken=txnRes.txnToken
 
    var config = {
@@ -96,11 +215,35 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
                 console.log("error => ",error);
             });
       
-    
+          }
+          else{
+            toast.error('Cart is tampered beta dekh leeo battameezi na kro', {
+                  position: "top-left",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  });
+            console.log(txnRes.error)
+          }
 }
 
 
   return (
+    <>
+    <ToastContainer
+      position="bottom-left"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
     <div className='container m-auto w-4/5 '>
       <Head>
       <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"/>
@@ -151,15 +294,15 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
       <div className="mx-auto flex my-4">
       <div className="px-2  w-1/2">
           <div className=" mb-4">
-            <label htmlFor="city" value={city} className="leading-7 text-sm text-gray-600">City</label>
-            <input type="text" id="city" name="city" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true} />
+            <label htmlFor="city"  className="leading-7 text-sm text-gray-600">City</label>
+            <input onChange={handleChange} type="text" id="city" value={city} name="city" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true} />
           </div>
 
         </div>
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="state" className="leading-7 text-sm text-gray-600">State</label>
-            <input type="text" id="state" value={state} name="state" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true} />
+            <input onChange={handleChange} type="text" id="state" value={state} name="state" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true} />
           </div>
 
         </div>
@@ -199,7 +342,7 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
        
       </div>
     </div>
-
+    </>
   )
 }
 

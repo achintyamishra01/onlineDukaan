@@ -16,7 +16,7 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
   const [service, setService] = useState();
   const checkService = async (e) => {
 
-    let pins = await fetch("http://localhost:3000/api/pincode");
+    let pins = await fetch("http://localhost:3000/api/pincodeSlug");
     let pinJson = await pins.json();
 
 
