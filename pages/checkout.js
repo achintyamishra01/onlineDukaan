@@ -4,11 +4,27 @@ import {  AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import Link from "next/link"
 import Head from 'next/head';  //imported to  integrate with payment gateway
 import Script from 'next/script'; //imported to  integrate with payment gateway
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
+import {useRouter} from 'next/router';
 
+
+
+const Checkout = ({user,cart,clearCart,subTotal,addToCart,removeFromCart}) => {
+  const router=useRouter()
+  useEffect(() => {
+    
+    if(!localStorage.getItem('token')){
+      router.push("/login")
+    }
+    else{databaseSe();}
+      
+    
+  
+    
+  
+  }, [])
 
   
   const [name, setname] = useState('')
@@ -19,7 +35,15 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
   const [city, setcity] = useState('')
   const [state, setstate] = useState('')
   const[disabled,setdisable]=useState(true)
+  
   const handleChange=(e)=>{
+    if( subTotal>0){
+      
+      setdisable(false)
+    }
+    else{
+      setdisable(true)
+    }
     if(e.target.name=='name'){
       setname(e.target.value)
     }
@@ -46,14 +70,22 @@ const Checkout = ({cart,subTotal,addToCart,removeFromCart}) => {
       setaddress(e.target.value)
     }
     
-    if(name.length>=3 && email.length>=5 && pincode.length==6 && phone.length==10 && address.length>=5){
-      
-      setdisable(false)
-    }
-    else{
-      setdisable(true)
-    }
+    
+    
+  }
 
+
+  const databaseSe=async()=>{
+    let a=await fetch("/api/userInfo",{
+      method:"POST",
+      headers:{
+        'Content-type':'application/json',
+      },
+      body:JSON.stringify({token:localStorage.getItem('token')})
+    });
+    let b=await a.json();
+    
+    setemail(b.user[0].email)
   }
 
 const pinInfo=async(pin)=>{
@@ -83,6 +115,7 @@ const pinInfo=async(pin)=>{
         setstate(a[0].PostOffice[0].State)
     }
     else {
+      
       toast.error(' Sorry we will be here soon', {
         position: "bottom-center ",
         autoClose: 1000,
@@ -217,7 +250,9 @@ else{
       
           }
           else{
-            toast.error('Cart is tampered beta dekh leeo battameezi na kro', {
+            if(txnRes.error=="Cart is tampered"){
+            clearCart();}
+            toast.error(txnRes.error, {
                   position: "top-left",
                   autoClose: 3000,
                   hideProgressBar: false,
@@ -261,7 +296,8 @@ else{
         <div className="px-2  w-1/2">
           <div className=" mb-4">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-            <input type="email" onChange={handleChange} value={email}  id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            {user.value? <input type="email"  value={email}  id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readOnly={true}/>:<input type="email" onChange={handleChange} value={email}  id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />}
+            
           </div>
 
         </div>

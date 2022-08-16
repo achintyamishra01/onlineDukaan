@@ -1,13 +1,20 @@
 import React from 'react'
 import mongoose from 'mongoose'
 import { useRouter } from 'next/router'
+import {useEffect} from 'react'
 import Order from '../models/Order'
-const MyOrder = ({order}) => {
+const MyOrder = ({order,clearCart}) => {
   const router=useRouter();
-
+  useEffect(() => {
+  
+    if(router.query.clearCart==1){clearCart()}
+  }, [])
+  
+  
 
 
   return (
+
    <section className="text-gray-600 body-font overflow-hidden">
     <div className="container px-5 py-24 mx-auto">
       <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -15,10 +22,10 @@ const MyOrder = ({order}) => {
           <h2 className="text-sm title-font text-gray-500 tracking-widest">CodesWear</h2>
           <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">Order id#{order.orderId}</h1>
           <p className="leading-relaxed mb-4">Your Order has been successfully placed. Your payment status is {order.status}</p>
-          <div class="flex mb-4">
-          <a class="flex-grow  py-2 text-lg md:px-10">Description</a>
-          <a class="flex-grow   py-2 text-lg md:px-32">Quantity</a>
-          <a class="flex-grow   py-2 text-lg md:px-5">Details</a>
+          <div className="flex mb-4">
+          <a className="flex-grow  py-2 text-lg md:px-10">Description</a>
+          <a className="flex-grow   py-2 text-lg md:px-32">Quantity</a>
+          <a className="flex-grow   py-2 text-lg md:px-5">Details</a>
         </div>
           {Object.keys(order.products).map((item)=>{
             
@@ -27,7 +34,7 @@ const MyOrder = ({order}) => {
            <span className="md:ml-40 ml-7   text-gray-900">{order.products[item].qty}</span>
            <span className="md:ml-40 ml-14 text-gray-900">₹{order.products[item].qty*order.products[item].price} </span>
          </div>
-          })}
+          })} 
         <div>
           
         </div>
@@ -48,11 +55,17 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI)
   }
-  let order = await Order.findById(context.query.id);
+  let order={}
+  if(context.query.id!=null){
+   order = await Order.findById(context.query.id);
+  }
 
-
-
-
+  if(Object.keys(order)==0){
+    return { // <-----------------does the trick here!!
+      notFound: true
+    }
+  }
+ 
   return {
     props: {order: JSON.parse(JSON.stringify(order)) }, // will be passed to the page component as props
   }

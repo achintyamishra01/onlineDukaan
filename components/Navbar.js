@@ -5,11 +5,12 @@ import { MdAccountCircle } from 'react-icons/md'
 import { AiFillCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import { useRef, useState } from 'react';
 const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTotal }) => {
-
+  
   const [dropdown, setdropdown] = useState(false)
-
+  const [disabled, setDisabled] = useState(true)
+ 
   const toggleCart = () => {
-
+    
     if (ref.current.classList.contains("translate-x-full")) {
       ref.current.classList.remove("translate-x-full")
       ref.current.classList.add("translate-x-0")
@@ -87,10 +88,10 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
           </ol>
           <div className="mx-2 my-2 font-semibold ">Subtotal :₹{subTotal}</div>
           {Object.keys(cart).length != 0 && <div className='flex  '>
-            <Link href={"/checkout"}><button className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1"><BsFillBagCheckFill className='mt-1 mx-1' />Checkout</button>
+            <Link href={"/checkout"}><button disabled={subTotal==0}className="disabled:bg-indigo-300 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1"><BsFillBagCheckFill className='mt-1 mx-1' />Checkout</button>
             </Link>
 
-            <button onClick={clearCart} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Clear</button></div>}
+            <button onClick={clearCart} disabled={subTotal==0} className="disabled:bg-indigo-300 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Clear</button></div>}
         </div>
 
 

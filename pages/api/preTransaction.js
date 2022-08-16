@@ -9,10 +9,24 @@ const handler =async(req,res)=>{
     let product ,sumTotal=0;
 
     if (req.method == 'POST') {
+        if(req.body.subTotal<=0){
+            res.status(200).json({success:false,error:"subtotal is not valid"})
+            return
+        }
        //checking whether the cart is tampered or not
        for(let item in req.body.cart ){
             sumTotal+= req.body.cart[item].price*req.body.cart[item].qty;
              product =await Product.findOne({slug:item})
+
+             //checking out of stock
+             if(product.availableQty<req.body.cart[item].qty){
+                res.status(200).json({success:false,error:`Quantity is not available ,available quantity${product.availableQty}`})
+                return;
+             }
+
+
+
+
             if(product.price!==req.body.cart[item].price){
                 res.status(200).json({success:false,error:"Cart is tampered"})
                 return
@@ -23,9 +37,23 @@ const handler =async(req,res)=>{
                 return
        }
        
-       
-       
-       
+       //checking details entered by user
+       if(req.body.name.length<=3){
+        res.status(200).json({success:false,error:"Enter a valid name"})
+                return
+       }
+       if(req.body.phone.length!=10){
+        res.status(200).json({success:false,error:"Enter valid phone number"})
+                return
+       }
+       if(req.body.pincode.length!=6){
+        res.status(200).json({success:false,error:"Enter valid pincode"})
+                return
+       }
+       if(req.body.address.length<=7){
+        res.status(200).json({success:false,error:"Enter address"})
+                return
+       }
        
        
        
