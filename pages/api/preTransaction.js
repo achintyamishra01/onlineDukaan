@@ -54,7 +54,14 @@ const handler =async(req,res)=>{
         res.status(200).json({success:false,error:"Enter address"})
                 return
        }
-       
+       if(req.body.city.length===0){
+        res.status(200).json({success:false,error:"Pincode is not servicable"})
+                return
+       }
+       if(req.body.state.length===0){
+        res.status(200).json({success:false,error:"Pincode is not servicable"})
+                return
+       }
        
        
         //initiate an order corresponding to this order id

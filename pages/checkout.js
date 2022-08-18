@@ -160,6 +160,7 @@ else{
         });
       setcity('')
       setstate('')
+      setdisable(true)
 }
 //api made by me  which is replaced by postal api
 
@@ -207,7 +208,7 @@ else{
     //getting a transaction token
    
    
-   const data={cart,subTotal,oid,email:email,name,address,pincode,phone}
+   const data={cart,subTotal,oid,email:email,name,address,pincode,phone,city,state}
    let a=await fetch("/api/preTransaction",{
       method:'POST',
       headers:{
@@ -357,7 +358,7 @@ else{
           {Object.keys(cart).map((k) => {
             return <li key={k}>
               <div className="item flex my-5">
-                <div className=' p-2 font-semibold '>
+                <div className=' p-2 font-semibold w-56  '>
                   {cart[k].name} ({cart[k].size}/{cart[k].variant})
                 </div>
                 <div className='w-1/3  flex items-center justify-center '>

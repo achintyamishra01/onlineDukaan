@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Link from 'next/link'
+import {AiOutlineArrowRight} from 'react-icons/ai'
 const orders = () => {
   const [orders, setOrders] = useState([])
   const router=useRouter()
@@ -30,7 +31,9 @@ const orders = () => {
     }
     }, [])
   return (
-    <div className="flex flex-col  md:m-20  ">
+    <>
+  {  orders.length==0?<div className='text-center'><p>No orders yet!! </p>
+    Refresh your wadrobe <Link href={"/"}><button><AiOutlineArrowRight className='text-red-900 '/></button></Link></div>:<div className="flex flex-col  md:m-20  ">
     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
         <div className="overflow-hidden">
@@ -77,6 +80,8 @@ const orders = () => {
       </div>
     </div>
   </div>
+  }
+  </>
   )
 }
 

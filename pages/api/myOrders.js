@@ -6,7 +6,7 @@ const handler = async (req, res) => {
     const token = req.body.token
     const data = jwt.verify(token, process.env.JWT)
    
-    const orders = await Order.find({ email: data.user.email })
+    const orders = await Order.find({ email: data.user.email,status:"Paid" })
     console.log(orders)
     res.status(200).json({orders})
 }

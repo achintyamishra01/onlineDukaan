@@ -6,7 +6,7 @@ import Product from '../../models/Product'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 const Slug = ({ addToCart, product, variants, buyNow }) => {
-  console.log(variants)
+
 
   const router = useRouter()
   const { slug } = router.query
@@ -59,10 +59,26 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
 
   //reloading the page when user selects color/size
   const refreshVariant = (newSize = 'M', newColor) => {
-
+   
+    setcolor(newColor);
+    setsize(newSize);
     let url = `${variants[newColor][newSize]['slug']}`
-    window.location = url
+    // window.location = url
+    router.push(url)
 
+  }
+  const f1=()=>{
+    addToCart(slug, 1, product.price, product.title, size, color)
+    toast.success(' Item added to cart!', {
+      position: "top-left",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+     
   }
 
   return <>
@@ -83,13 +99,13 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
           <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto  px-24  object-cover object-top rounded" src={product.img} />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <h2 className="text-sm title-font text-gray-500 tracking-widest">CodesWear</h2>
-            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} {`(${product.size}/${product.color})`}</h1>
+            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} {product.category!=="Mug" && product.category!="Sticker" && `(${product.size}/${product.color})`}</h1>
             <div className="flex mb-4">
 
             </div>
             <p className="leading-relaxed">{product.desc}</p>
-            <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-              <div className="flex">
+            {product.category=="Mug" || product.category=="Sticker"?<div className='md:mt-6'></div>:<div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+             <div className="flex">
                 <span className="mr-3">Color</span>
                 {Object.keys(variants).includes("Blue") && <button onClick={() => { refreshVariant(Object.keys(variants["Blue"])[0], "Blue") }} className={`border-2  bg-blue-500 rounded-full w-6 h-6 focus:outline-none ${color == "Blue" ? "border-black" : "border-gray-300"} `}></button>}
 
@@ -104,6 +120,7 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
                 <span className="mr-3">Size</span>
                 <div className="relative">
                   <select value={size} onChange={(e) => refreshVariant(e.target.value, color)} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+                    
                     {Object.keys(variants[color]).includes("S") && <option>S</option>}
                     {Object.keys(variants[color]).includes("M") && <option>M</option>}
                     {Object.keys(variants[color]).includes("L") && <option>L</option>}
@@ -116,18 +133,24 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
                   </span>
                 </div>
               </div>
-            </div>
-            <div className="md:flex">
+            </div>}
+            {product.availableQty===0?<div className='text-center text-xl'>Out Of Stock</div>:<div className="md:flex">
               <span className="title-font font-medium text-2xl text-gray-900">₹ {product.price}.00</span>
-              <button onClick={() => { addToCart(slug, 1, product.price, product.title, size, color) }} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add to Cart</button>
-              <button onClick={() => { buyNow(slug, 1, product.price, product.title, size, color) }} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Buy Now</button>
+              <button onClick={ f1
+
+                // () => { addToCart(slug, 1, product.price, product.title, size, color)  }
               
-            </div>
-            <div className="pin mt-6 flex space-x-2 text-sm">
+              }  
+                
+                className="flex md:ml-auto mt-6 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add to Cart</button>
+              <button onClick={() => { buyNow(slug, 1, product.price, product.title, size, color) }} className="flex md:ml-auto mt-6 text-white bg-indigo-500 border-0 py-2  px-6 focus:outline-none hover:bg-indigo-600 rounded">Buy Now</button>
+              
+            </div>}
+            {product.availableQty===0? <div></div>: <div className="pin mt-6 flex space-x-2 text-sm">
               <input placeholder='Enter your Pincode' onChange={onChangePin} className='px-2 border-2 border-blue-400 rounded-md h-9' type="number"></input>
 
               {(pin.length > 5) && <button onClick={checkService} id="bt1" className='text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded'  >Check</button>}
-            </div>
+            </div>}
             {(service == false && service != null && pin.length > 5) && <div className='text-red-700 text-sm mt-3'>
               Sorry! We will be here Soon
             </div>}
@@ -149,6 +172,12 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGO_URI)
   }
   let product = await Product.findOne({ slug: context.query.slug });
+  if(product==null){
+    return { // <-----------------does the trick here!!
+      notFound: true
+    }
+  }
+else{
   let variants = await Product.find({ title: product.title });
 
   let colorSizeSlug = {}   //{ red:{xl:{slug:'wear-the-code}}}
@@ -163,7 +192,7 @@ export async function getServerSideProps(context) {
     }
 
   }
-
+  
 
 
 
@@ -172,6 +201,7 @@ export async function getServerSideProps(context) {
   return {
     props: { product: JSON.parse(JSON.stringify(product)), variants: JSON.parse(JSON.stringify(colorSizeSlug)) }, // will be passed to the page component as props
   }
+}
 }
 
 export default Slug

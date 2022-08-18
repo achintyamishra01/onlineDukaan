@@ -1,36 +1,46 @@
 import React from 'react'
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from "next/link"
 import { BsFillCartFill, BsFillBagCheckFill } from 'react-icons/bs';
 import { MdAccountCircle } from 'react-icons/md'
 import { AiFillCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import { useRef, useState } from 'react';
 const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+  const router=useRouter();
   
   const [dropdown, setdropdown] = useState(false)
-  const [disabled, setDisabled] = useState(true)
- 
+  const [sidebar, setsidebar] = useState(false)
+  useEffect(() => {
+    if(Object.keys(cart).length===0){setsidebar(false)}
+
+  }, [])
+  
+  
   const toggleCart = () => {
+    setsidebar(!sidebar);
     
-    if (ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-full")
-      ref.current.classList.add("translate-x-0")
-    }
-    else if (ref.current.classList.contains("translate-x-0")) {
-      ref.current.classList.remove("translate-x-0")
-      ref.current.classList.add("translate-x-full")
-    }
+    // if (ref.current.classList.contains("translate-x-full")) {
+    //   ref.current.classList.remove("translate-x-full")
+    //   ref.current.classList.add("translate-x-0")
+    // }
+    // else if (ref.current.classList.contains("translate-x-0")) {
+    //   ref.current.classList.remove("translate-x-0")
+    //   ref.current.classList.add("translate-x-full")
+    // }
   }
   //ref is used here to avoid document.getelementbyid syntax here ref refers to the div in which cart items are there
   const ref = useRef()
   return (
-    <div><header className="text-gray-600 body-font shadow-xl  ">
+    <><header className={`text-gray-600 body-font shadow-xl `}>
 
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row md:items-center   ">
+      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row md:items-center "  >
         <Link href={"/"}>
           <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+            <img src="/code.png" className="w-10 h-10 "  alt=""/>
+            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
+            </svg> */}
             <span className="ml-2 text-xl">CodesWear</span>
           </a>
         </Link>
@@ -61,8 +71,10 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
 
 
         {/* here in below div if condition is applied because our cart was closing everytime we perform any action in it like adding or deleting items it happens because component navbar was re-rendered due to change in subtotal therefore conditon is applied on translate  */}
-        <div ref={ref} className={` w-80 h-[100vh] overflow-y-scroll  sidecart absolute top-0 right-0 bg-gradient-to-b from-slate-100   to-indigo-200 ... px-6 py-10 transform transition-transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'}  rounded-xl`} style={{ "zIndex": "1" }}>
-
+        {sidebar&&<div ref={ref} className={` w-80 h-[100vh] overflow-y-scroll  sidecart absolute top-0  bg-gradient-to-b from-slate-100   to-indigo-200 ... px-6 py-10 transform transition-all ${sidebar ? 'right-0' : '-right-96'}  rounded-xl`} 
+        style={{ "zIndex": "1" }}
+        >
+ 
           <h2 className='font-bold text-xl text-center'>This is Shopping Cart</h2>
           <span onClick={toggleCart} className="absolute top-5 right-2 cursor-pointer text-xl"><AiFillCloseCircle className='text-red-700 ' /></span>
           <ol className='list-decimal font-semibold'>
@@ -92,11 +104,11 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
             </Link>
 
             <button onClick={clearCart} disabled={subTotal==0} className="disabled:bg-indigo-300 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8  focus:outline-none hover:bg-indigo-600 rounded text-sm mr-1">Clear</button></div>}
-        </div>
+        </div>}
 
 
       </div>
-    </header></div>
+    </header></>
   )
 }
 
