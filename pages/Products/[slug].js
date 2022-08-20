@@ -98,7 +98,7 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
           <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto  px-24  object-cover object-top rounded" src={product.img} />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-            <h2 className="text-sm title-font text-gray-500 tracking-widest">CodesWear</h2>
+            <h2 className="text-sm title-font text-gray-500 tracking-widest">OnlineDukaan</h2>
             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} {product.category!=="Mug" && product.category!="Sticker" && `(${product.size}/${product.color})`}</h1>
             <div className="flex mb-4">
 
@@ -151,13 +151,15 @@ const Slug = ({ addToCart, product, variants, buyNow }) => {
 
               {(pin.length > 5) && <button onClick={checkService} id="bt1" className='text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded'  >Check</button>}
             </div>}
-            {(service == false && service != null && pin.length > 5) && <div className='text-red-700 text-sm mt-3'>
+
+            {/* pincode checking done done thrigh toast */}
+            {/* {(service == false && service != null && pin.length > 5) && <div className='text-red-700 text-sm mt-3'>
               Sorry! We will be here Soon
             </div>}
 
             {(service == true && service != null && pin.length > 5) && <div className='text-green-700 text-sm mt-3'>
               Yay! We deliver Here
-            </div>}
+            </div>} */}
 
           </div>
         </div>

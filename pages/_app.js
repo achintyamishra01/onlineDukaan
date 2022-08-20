@@ -137,6 +137,8 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
       />
   {key &&<Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />}
   
+  
+  
   <Component user={user} cart={cart} buyNow={buyNow} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }
 

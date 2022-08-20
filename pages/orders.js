@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Link from 'next/link'
-import {AiOutlineArrowRight} from 'react-icons/ai'
+import {AiOutlineArrowRight} from 'react-icons/ai' 
 const orders = () => {
   const [orders, setOrders] = useState([])
   const router=useRouter()

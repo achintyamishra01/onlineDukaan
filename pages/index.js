@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <div >
       <Head>
-        <title>CodesWear.com  </title>
-        <meta name="description" content="CodesWear Ecommerce Store" />
+        <title>OnlineDukaan.com  </title>
+        <meta name="description" content="OnlineDukaan Ecommerce Store" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       

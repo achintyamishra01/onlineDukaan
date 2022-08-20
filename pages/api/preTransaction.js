@@ -38,7 +38,7 @@ const handler =async(req,res)=>{
        }
        
        //checking details entered by user
-       if(req.body.name.length<=3){
+       if(req.body.name.length<3){
         res.status(200).json({success:false,error:"Enter a valid name"})
                 return
        }

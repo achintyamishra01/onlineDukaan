@@ -12,7 +12,7 @@ const Footer = () => {
               {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg> */}
-              <span className="ml-3 text-xl">CodesWear</span>
+              <span className="ml-3 text-xl">OnlineDukaan</span>
             </a></Link>
           <p className=' text-sm text-gray-500 md:px-12 px-4'>Wear the &lt;Code/&gt;  </p>
         </div>
@@ -89,7 +89,7 @@ const Footer = () => {
                 <a className="text-gray-600 hover:text-gray-800">Corporate Information</a>
               </li>
               <li>
-                <a className="text-gray-600 hover:text-gray-800">CodesWear Wholesale</a>
+                <a className="text-gray-600 hover:text-gray-800">OnlineDukaan Wholesale</a>
               </li>
             </nav>
           </div>
@@ -97,7 +97,7 @@ const Footer = () => {
       </div>
       <div className="bg-gray-100">
         <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-          <p className="text-gray-500 text-sm text-center sm:text-left">© 2022 CodesWear.com — All Rights Reserved
+          <p className="text-gray-500 text-sm text-center sm:text-left">© 2022 OnlineDukaan.com — All Rights Reserved
 
           </p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
