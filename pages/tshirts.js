@@ -58,9 +58,14 @@ export async function getServerSideProps(context) {
   //this code is written so that tshirts having same title or name should be clubbed together so that if different colors are available for same tshirt they can be stored into the array same for sizes if different title or name is there then those tshirts will be treated differently because item.title is the key
   let tshirts = {};
   for (let item of products) {
+    if(item.availableQty==0){
+    
+      continue;
+    }
     if (item.title in tshirts) {
       if (!tshirts[item.title].color.includes(item.color) && item.availableQty > 0) {
-        tshirts[item.title].color.push(item.color)
+        if(tshirts[item.title].color==""){tshirts[item.title].color=[item.color]}
+        else{tshirts[item.title].color.push(item.color)}
       }
       if (!tshirts[item.title].size.includes(item.size) && item.availableQty > 0) {
         tshirts[item.title].size.push(item.size)
@@ -69,9 +74,11 @@ export async function getServerSideProps(context) {
     }
     else {
       tshirts[item.title] = JSON.parse(JSON.stringify(item))
+       
+      
       if (item.availableQty > 0) {
         tshirts[item.title].color = [item.color]
-        tshirts[item.title].size = [item.size]
+        tshirts[item.title].size = [item.size]     
       }
     }
 

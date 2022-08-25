@@ -66,7 +66,7 @@ useEffect(() => {  //if user is already logged in then eredirect him to hime pag
 
 
     
-    console.log(response)
+    
 
     setemail("")
     setpassword("")

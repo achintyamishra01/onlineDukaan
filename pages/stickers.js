@@ -36,6 +36,10 @@ export  async function getServerSideProps(context){
   let products=await Product.find({category:"Sticker"});
   let stickers={}
   for (let item of products) {
+    if(item.availableQty==0){
+    
+      continue;
+    }
     if(item.title in stickers){
       if (!stickers[item.title].color.includes(item.color) && item.availableQty > 0) {
         stickers[item.title].color.push(item.color)

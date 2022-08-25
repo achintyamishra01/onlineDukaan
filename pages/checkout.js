@@ -19,7 +19,11 @@ const Checkout = ({ user, cart, clearCart, subTotal, addToCart, removeFromCart }
     if (!localStorage.getItem('token')) {
       router.push("/login")
     }
-    else { databaseSe(); }
+    else { 
+        databaseSe(); 
+
+    
+    }
 
 
 
@@ -86,7 +90,11 @@ const Checkout = ({ user, cart, clearCart, subTotal, addToCart, removeFromCart }
     });
     let b = await a.json();
 
+    setaddress(b.user[0].address)
     setemail(b.user[0].email)
+    setname(b.user[0].name)
+
+    
   }
 
   const pinInfo = async (pin) => {

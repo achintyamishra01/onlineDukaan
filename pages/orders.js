@@ -19,7 +19,7 @@ const orders = () => {
           body:JSON.stringify({token:localStorage.getItem('token')})
        });
        let res=await a.json();
-       console.log(res.orders)
+       
        setOrders(res.orders);
       }
       if(localStorage.getItem('token')){

@@ -39,6 +39,10 @@ export async function getServerSideProps(context) {
 
   let mugs = {};
   for (let item of products) {
+    if(item.availableQty==0){
+    
+      continue;
+    }
     if (item.title in mugs) {
       if (!mugs[item.title].color.includes(item.color) && item.availableQty > 0) {
         mugs[item.title].color.push(item.color)

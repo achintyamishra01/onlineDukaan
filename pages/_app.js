@@ -30,7 +30,7 @@ const [key, setkey] = useState()
 
 
 
-    console.log("hey i am a useEffect from _app.js")
+   
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart"))) //since item in local storage is i the form of string
@@ -67,7 +67,7 @@ const Logout=()=>{
     localStorage.setItem("cart", JSON.stringify(myCart)) //Since in local storage items are saved in the form of string thats"why stringify is used
     let subt=0;
     let keys=Object.keys(myCart);
-    console.log( keys)
+    
     for (let index = 0; index < keys.length; index++) {
       subt+=myCart[keys[index]].price * myCart[keys[index]].qty;
       
@@ -104,7 +104,7 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
   //to clear items in cart
   const clearCart = () => {
     
-    console.log("cart cleared")
+    c
     setCart({})
     //why we are not passing myCart in saveCart method : because in js it assured that cart will get updated but when it will be updated depends on js(async nature) thats"why to avoid errors empty opbject is passed 
     saveCart({})
