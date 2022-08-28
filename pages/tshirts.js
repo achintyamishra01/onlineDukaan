@@ -2,10 +2,14 @@ import React from 'react'
 import Link from 'next/link'
 import mongoose from 'mongoose'
 import Product from '../models/Product'
+
 const tshirts = ({ products }) => {
 
 
   return (
+    
+    <>
+
     <div><section className="text-gray-600 body-font mx-16">
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap -m-4 justify-center">
@@ -43,7 +47,7 @@ const tshirts = ({ products }) => {
 
         </div>
       </div>
-    </section></div>
+    </section></div></>
   )
 }
 

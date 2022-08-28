@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react'
 import {useRouter} from 'next/router'
 import LoadingBar from 'react-top-loading-bar'
 
-function MyApp({ Component, pageProps }) {
 
+function MyApp({ Component, pageProps }) {
+ 
   const [cart, setCart] = useState({})
   const [subTotal, setsubTotal] = useState(0)
 
@@ -20,15 +21,24 @@ const [key, setkey] = useState()
 
   // What does useEffect do? By using this Hook, you tell React that your component needs to do something after render
   useEffect(() => {
+
+
+ 
+
+
+
+
     router.events.on('routeChangeStart',()=>{ //code for top loading bar
       setProgress(40)
+      
     })
     router.events.on('routeChangeComplete',()=>{ //code for top loading bar
       setProgress(100)
+      
     })
 
 
-
+    console.log("hey i am a useEffect from _app.js")
 
    
     try {
@@ -51,6 +61,14 @@ const [key, setkey] = useState()
     setkey(Math.random())
    
   }, [router.query])
+
+/////////////////////////////spinner/////////////
+//   const override = `
+//   display: block;
+//   margin: 0 auto;
+//   border-color: red;
+// `;
+////////////////////////////////////////////////
 
 //to logout
 const Logout=()=>{
@@ -104,7 +122,7 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
   //to clear items in cart
   const clearCart = () => {
     
-    c
+    
     setCart({})
     //why we are not passing myCart in saveCart method : because in js it assured that cart will get updated but when it will be updated depends on js(async nature) thats"why to avoid errors empty opbject is passed 
     saveCart({})
@@ -136,9 +154,7 @@ const buyNow=(itemCode, qty, price, name, size, variant)=>{
         onLoaderFinished={() => setProgress(0)}
       />
   {key &&<Navbar Logout={Logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}   />}
-  
-  
-  
+
   <Component user={user} cart={cart} buyNow={buyNow} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} /><Footer></Footer> </>
 }
 

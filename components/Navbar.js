@@ -52,8 +52,9 @@ const Navbar = ({Logout, user, cart, addToCart, removeFromCart, clearCart, subTo
                 <Link href={"/myAccount"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>My Account</li></a></Link>
 
                 <Link href={"/orders"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>Your Orders</li></a></Link>
-
+                <Link href={"/contact"} ><a> <li className='text-sm py-1 hover:text-indigo-500'>Contact Us</li></a></Link>
                  <li onClick={Logout} className='text-sm py-1 hover:text-indigo-500'>Logout</li>
+
               </ul>
             </div>}
             {user.value && <MdAccountCircle className='text-2xl m-2 md:text-3xl'></MdAccountCircle>}</span>

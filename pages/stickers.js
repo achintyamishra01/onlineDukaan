@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import Product from '../models/Product' 
 const stickers = ({products}) => {
   return (
-    <div><section className="text-gray-600 body-font mx-12">
+    <div><section className="text-gray-600 body-font mx-12 min-h-screen">
     <div className="container px-5 py-24 mx-auto">
       <div className="flex flex-wrap -m-4 justify-center">
       {Object.keys(products).length===0 && <p>Sorry All the Stickers are Currently Out of Stock</p>}
